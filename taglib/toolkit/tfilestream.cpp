@@ -30,8 +30,9 @@
 #ifdef _WIN32
 # include <windows.h>
 #else
-# include <cstdio>
-# include <unistd.h>
+#  include <climits>
+#  include <cstdio>
+#  include <unistd.h>
 #endif
 
 using namespace TagLib;
@@ -325,7 +326,7 @@ void FileStream::removeBlock(offset_t start, size_t length)
 
   ByteVector buffer(bufferLength);
 
-  for(unsigned int bytesRead = -1; bytesRead != 0;) {
+  for(unsigned int bytesRead = UINT_MAX; bytesRead != 0;) {
     seek(readPosition);
     bytesRead = static_cast<unsigned int>(readFile(d->file, buffer));
     readPosition += bytesRead;
