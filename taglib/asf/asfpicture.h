@@ -31,6 +31,8 @@
 #include "taglib_export.h"
 #include "attachedpictureframe.h"
 
+#include <memory>
+
 namespace TagLib
 {
   namespace ASF
@@ -103,24 +105,9 @@ namespace TagLib
       Picture();
 
       /*!
-       * Construct an picture as a copy of \a other.
-       */
-      Picture(const Picture& other);
-
-      /*!
        * Destroys the picture.
        */
       virtual ~Picture();
-
-      /*!
-       * Copies the contents of \a other into this picture.
-       */
-      Picture& operator=(const Picture& other);
-
-      /*!
-       * Exchanges the content of the Picture by the content of \a other.
-       */
-      void swap(Picture &other);
 
       /*!
        * Returns true if Picture stores valid picture
@@ -214,7 +201,7 @@ namespace TagLib
 
       private:
         class PicturePrivate;
-        PicturePrivate *d;
+        std::shared_ptr<PicturePrivate> d;
       };
   }  // namespace ASF
 }  // namespace TagLib

@@ -34,7 +34,7 @@
 
 using namespace TagLib;
 
-class ASF::Attribute::AttributePrivate : public RefCounter
+class ASF::Attribute::AttributePrivate
 {
 public:
   AttributePrivate() :
@@ -56,83 +56,60 @@ public:
 ////////////////////////////////////////////////////////////////////////////////
 
 ASF::Attribute::Attribute() :
-  d(new AttributePrivate())
+  d(std::make_shared<AttributePrivate>())
 {
   d->type = UnicodeType;
 }
 
-ASF::Attribute::Attribute(const ASF::Attribute &other) :
-  d(other.d)
-{
-  d->ref();
-}
+ASF::Attribute::~Attribute() = default;
 
 ASF::Attribute::Attribute(const String &value) :
-  d(new AttributePrivate())
+  d(std::make_shared<AttributePrivate>())
 {
   d->type = UnicodeType;
   d->stringValue = value;
 }
 
 ASF::Attribute::Attribute(const ByteVector &value) :
-  d(new AttributePrivate())
+  d(std::make_shared<AttributePrivate>())
 {
   d->type = BytesType;
   d->byteVectorValue = value;
 }
 
 ASF::Attribute::Attribute(const ASF::Picture &value) :
-  d(new AttributePrivate())
+  d(std::make_shared<AttributePrivate>())
 {
   d->type = BytesType;
   d->pictureValue = value;
 }
 
 ASF::Attribute::Attribute(unsigned int value) :
-  d(new AttributePrivate())
+  d(std::make_shared<AttributePrivate>())
 {
   d->type = DWordType;
   d->numericValue = value;
 }
 
 ASF::Attribute::Attribute(unsigned long long value) :
-  d(new AttributePrivate())
+  d(std::make_shared<AttributePrivate>())
 {
   d->type = QWordType;
   d->numericValue = value;
 }
 
 ASF::Attribute::Attribute(unsigned short value) :
-  d(new AttributePrivate())
+  d(std::make_shared<AttributePrivate>())
 {
   d->type = WordType;
   d->numericValue = value;
 }
 
 ASF::Attribute::Attribute(bool value) :
-  d(new AttributePrivate())
+  d(std::make_shared<AttributePrivate>())
 {
   d->type = BoolType;
   d->numericValue = value;
-}
-
-ASF::Attribute &ASF::Attribute::operator=(const ASF::Attribute &other)
-{
-  Attribute(other).swap(*this);
-  return *this;
-}
-
-void ASF::Attribute::swap(Attribute &other)
-{
-  using std::swap;
-
-  swap(d, other.d);
-}
-
-ASF::Attribute::~Attribute()
-{
-  if(d->deref())
-    delete d;
 }
 
 ASF::Attribute::AttributeTypes ASF::Attribute::type() const

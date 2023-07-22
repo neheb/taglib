@@ -31,6 +31,8 @@
 #include "taglib_export.h"
 #include "asfpicture.h"
 
+#include <memory>
+
 namespace TagLib
 {
   namespace ASF
@@ -102,21 +104,6 @@ namespace TagLib
        * Constructs an attribute with \a key and a BoolType \a value.
        */
       Attribute(bool value);
-
-      /*!
-       * Construct an attribute as a copy of \a other.
-       */
-      Attribute(const Attribute &item);
-
-      /*!
-       * Copies the contents of \a other into this item.
-       */
-      Attribute &operator=(const Attribute &other);
-
-      /*!
-       * Exchanges the content of the Attribute by the content of \a other.
-       */
-      void swap(Attribute &other);
 
       /*!
        * Destroys the attribute.
@@ -197,7 +184,7 @@ namespace TagLib
       ByteVector render(const String &name, int kind = 0) const;
 
       class AttributePrivate;
-      AttributePrivate *d;
+      std::shared_ptr<AttributePrivate> d;
     };
   }  // namespace ASF
 }  // namespace TagLib
