@@ -4,7 +4,7 @@ project(
   license: 'LGPL-2.1-or-later OR MPL-1.1',
   version: '1.13.1',
   meson_version: '>=0.54.1',
-  default_options: 'warning_level=0',
+  default_options: ['cpp_std=c++17', 'warning_level=1'],
 )
 
 cpp = meson.get_compiler('cpp')
