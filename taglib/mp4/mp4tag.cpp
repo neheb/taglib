@@ -323,7 +323,7 @@ MP4::Tag::parseCovr(const MP4::Atom *atom)
 }
 
 ByteVector
-MP4::Tag::padIlst(const ByteVector &data, int length) const
+MP4::Tag::padIlst(const ByteVector &data, int length)
 {
   if(length == -1) {
     length = ((data.size() + 1023) & ~1023) - data.size();
@@ -332,13 +332,13 @@ MP4::Tag::padIlst(const ByteVector &data, int length) const
 }
 
 ByteVector
-MP4::Tag::renderAtom(const ByteVector &name, const ByteVector &data) const
+MP4::Tag::renderAtom(const ByteVector &name, const ByteVector &data)
 {
   return ByteVector::fromUInt(data.size() + 8) + name + data;
 }
 
 ByteVector
-MP4::Tag::renderData(const ByteVector &name, int flags, const ByteVectorList &data) const
+MP4::Tag::renderData(const ByteVector &name, int flags, const ByteVectorList &data)
 {
   ByteVector result;
   for(const auto &byte : data) {
@@ -348,7 +348,7 @@ MP4::Tag::renderData(const ByteVector &name, int flags, const ByteVectorList &da
 }
 
 ByteVector
-MP4::Tag::renderBool(const ByteVector &name, const MP4::Item &item) const
+MP4::Tag::renderBool(const ByteVector &name, const MP4::Item &item)
 {
   ByteVectorList data;
   data.append(ByteVector(1, item.toBool() ? '\1' : '\0'));
@@ -356,7 +356,7 @@ MP4::Tag::renderBool(const ByteVector &name, const MP4::Item &item) const
 }
 
 ByteVector
-MP4::Tag::renderInt(const ByteVector &name, const MP4::Item &item) const
+MP4::Tag::renderInt(const ByteVector &name, const MP4::Item &item)
 {
   ByteVectorList data;
   data.append(ByteVector::fromShort(item.toInt()));
@@ -364,7 +364,7 @@ MP4::Tag::renderInt(const ByteVector &name, const MP4::Item &item) const
 }
 
 ByteVector
-MP4::Tag::renderUInt(const ByteVector &name, const MP4::Item &item) const
+MP4::Tag::renderUInt(const ByteVector &name, const MP4::Item &item)
 {
   ByteVectorList data;
   data.append(ByteVector::fromUInt(item.toUInt()));
@@ -372,7 +372,7 @@ MP4::Tag::renderUInt(const ByteVector &name, const MP4::Item &item) const
 }
 
 ByteVector
-MP4::Tag::renderLongLong(const ByteVector &name, const MP4::Item &item) const
+MP4::Tag::renderLongLong(const ByteVector &name, const MP4::Item &item)
 {
   ByteVectorList data;
   data.append(ByteVector::fromLongLong(item.toLongLong()));
@@ -380,7 +380,7 @@ MP4::Tag::renderLongLong(const ByteVector &name, const MP4::Item &item) const
 }
 
 ByteVector
-MP4::Tag::renderByte(const ByteVector &name, const MP4::Item &item) const
+MP4::Tag::renderByte(const ByteVector &name, const MP4::Item &item)
 {
   ByteVectorList data;
   data.append(ByteVector(1, item.toByte()));
@@ -388,7 +388,7 @@ MP4::Tag::renderByte(const ByteVector &name, const MP4::Item &item) const
 }
 
 ByteVector
-MP4::Tag::renderIntPair(const ByteVector &name, const MP4::Item &item) const
+MP4::Tag::renderIntPair(const ByteVector &name, const MP4::Item &item)
 {
   ByteVectorList data;
   data.append(ByteVector(2, '\0') +
@@ -399,7 +399,7 @@ MP4::Tag::renderIntPair(const ByteVector &name, const MP4::Item &item) const
 }
 
 ByteVector
-MP4::Tag::renderIntPairNoTrailing(const ByteVector &name, const MP4::Item &item) const
+MP4::Tag::renderIntPairNoTrailing(const ByteVector &name, const MP4::Item &item)
 {
   ByteVectorList data;
   data.append(ByteVector(2, '\0') +
@@ -409,7 +409,7 @@ MP4::Tag::renderIntPairNoTrailing(const ByteVector &name, const MP4::Item &item)
 }
 
 ByteVector
-MP4::Tag::renderText(const ByteVector &name, const MP4::Item &item, int flags) const
+MP4::Tag::renderText(const ByteVector &name, const MP4::Item &item, int flags)
 {
   ByteVectorList data;
   for(const auto &value : item.toStringList()) {
@@ -419,7 +419,7 @@ MP4::Tag::renderText(const ByteVector &name, const MP4::Item &item, int flags) c
 }
 
 ByteVector
-MP4::Tag::renderCovr(const ByteVector &name, const MP4::Item &item) const
+MP4::Tag::renderCovr(const ByteVector &name, const MP4::Item &item)
 {
   ByteVector data;
   for(const auto &value : item.toCoverArtList()) {
@@ -429,7 +429,7 @@ MP4::Tag::renderCovr(const ByteVector &name, const MP4::Item &item) const
 }
 
 ByteVector
-MP4::Tag::renderFreeForm(const String &name, const MP4::Item &item) const
+MP4::Tag::renderFreeForm(const String &name, const MP4::Item &item)
 {
   StringList header = StringList::split(name, ":");
   if(header.size() != 3) {
