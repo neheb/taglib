@@ -198,7 +198,7 @@ namespace TagLib {
     /*!
      * Exchanges the content of this map by the content of \a m.
      */
-    void swap(Map<Key, T> &m);
+    void swap(Map<Key, T> &m) noexcept;
 
   protected:
     /*

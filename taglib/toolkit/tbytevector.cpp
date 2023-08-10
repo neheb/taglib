@@ -801,7 +801,7 @@ ByteVector &ByteVector::operator=(const char *data)
   return *this;
 }
 
-void ByteVector::swap(ByteVector &v)
+void ByteVector::swap(ByteVector &v) noexcept
 {
   using std::swap;
 

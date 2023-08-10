@@ -57,7 +57,7 @@ MP4::CoverArt::operator=(const CoverArt &item)
 }
 
 void
-MP4::CoverArt::swap(CoverArt &item)
+MP4::CoverArt::swap(CoverArt &item) noexcept
 {
   using std::swap;
 

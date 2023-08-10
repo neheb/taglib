@@ -250,7 +250,7 @@ namespace TagLib {
     /*!
      * Exchanges the content of this list by the content of \a l.
      */
-    void swap(List<T> &l);
+    void swap(List<T> &l) noexcept;
 
     /*!
      * Compares this list with \a l and returns true if all of the elements are

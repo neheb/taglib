@@ -572,7 +572,7 @@ namespace TagLib {
     /*!
      * Exchanges the content of the ByteVector by the content of \a v.
      */
-    void swap(ByteVector &v);
+    void swap(ByteVector &v) noexcept;
 
     /*!
      * Returns a hex-encoded copy of the byte vector.

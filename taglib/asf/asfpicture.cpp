@@ -116,7 +116,7 @@ ASF::Picture& ASF::Picture::operator=(const ASF::Picture& other)
   return *this;
 }
 
-void ASF::Picture::swap(Picture &other)
+void ASF::Picture::swap(Picture &other) noexcept
 {
   using std::swap;
 

@@ -116,7 +116,7 @@ ASF::Attribute &ASF::Attribute::operator=(const ASF::Attribute &other)
   return *this;
 }
 
-void ASF::Attribute::swap(Attribute &other)
+void ASF::Attribute::swap(Attribute &other) noexcept
 {
   using std::swap;
 

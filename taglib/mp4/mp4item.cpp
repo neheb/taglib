@@ -63,7 +63,7 @@ MP4::Item::operator=(const Item &item)
 }
 
 void
-MP4::Item::swap(Item &item)
+MP4::Item::swap(Item &item) noexcept
 {
   using std::swap;
 

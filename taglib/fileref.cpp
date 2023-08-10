@@ -437,7 +437,7 @@ FileRef &FileRef::operator=(const FileRef &ref)
   return *this;
 }
 
-void FileRef::swap(FileRef &ref)
+void FileRef::swap(FileRef &ref) noexcept
 {
   using std::swap;
 
