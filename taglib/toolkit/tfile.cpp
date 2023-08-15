@@ -73,7 +73,7 @@ public:
 // public members
 ////////////////////////////////////////////////////////////////////////////////
 
-File::File(FileName fileName) :
+File::File(const FileName& fileName) :
   d(std::make_unique<FilePrivate>(new FileStream(fileName), true))
 {
 }

@@ -466,7 +466,7 @@ bool ASF::File::isSupported(IOStream *stream)
 // public members
 ////////////////////////////////////////////////////////////////////////////////
 
-ASF::File::File(FileName file, bool, Properties::ReadStyle) :
+ASF::File::File(const FileName& file, bool, Properties::ReadStyle) :
   TagLib::File(file),
   d(std::make_unique<FilePrivate>())
 {

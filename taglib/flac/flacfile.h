@@ -92,7 +92,7 @@ namespace TagLib {
        * \deprecated This constructor will be dropped in favor of the one below
        * in a future version.
        */
-      File(FileName file, bool readProperties = true,
+      File(const FileName& file, bool readProperties = true,
            Properties::ReadStyle propertiesStyle = Properties::Average);
 
       /*!
@@ -105,7 +105,7 @@ namespace TagLib {
        * \note In the current implementation, \a propertiesStyle is ignored.
        */
       // BIC: merge with the above constructor, kept for source compatibility
-      File(FileName file, ID3v2::FrameFactory *frameFactory,
+      File(const FileName& file, ID3v2::FrameFactory *frameFactory,
            bool readProperties = true,
            Properties::ReadStyle propertiesStyle = Properties::Average);
 

@@ -59,7 +59,7 @@ bool Ogg::Opus::File::isSupported(IOStream *stream)
 // public members
 ////////////////////////////////////////////////////////////////////////////////
 
-Opus::File::File(FileName file, bool readProperties, Properties::ReadStyle) :
+Opus::File::File(const FileName& file, bool readProperties, Properties::ReadStyle) :
   Ogg::File(file),
   d(std::make_unique<FilePrivate>())
 {

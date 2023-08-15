@@ -91,7 +91,7 @@ namespace TagLib {
        * instantiated directly but rather should be used through the codec
        * specific subclasses.
        */
-      File(FileName file);
+      File(const FileName& file);
 
       /*!
        * Constructs an Ogg file from \a stream.

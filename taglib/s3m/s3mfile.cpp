@@ -45,7 +45,7 @@ public:
   S3M::Properties properties;
 };
 
-S3M::File::File(FileName file, bool readProperties,
+S3M::File::File(const FileName& file, bool readProperties,
                 AudioProperties::ReadStyle propertiesStyle) :
   Mod::FileBase(file),
   d(std::make_unique<FilePrivate>(propertiesStyle))

@@ -56,7 +56,7 @@ bool RIFF::AIFF::File::isSupported(IOStream *stream)
 // public members
 ////////////////////////////////////////////////////////////////////////////////
 
-RIFF::AIFF::File::File(FileName file, bool readProperties, Properties::ReadStyle) :
+RIFF::AIFF::File::File(const FileName& file, bool readProperties, Properties::ReadStyle) :
   RIFF::File(file, BigEndian),
   d(std::make_unique<FilePrivate>())
 {

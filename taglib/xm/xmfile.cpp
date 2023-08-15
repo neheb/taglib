@@ -357,7 +357,7 @@ public:
   XM::Properties properties;
 };
 
-XM::File::File(FileName file, bool readProperties,
+XM::File::File(const FileName& file, bool readProperties,
                AudioProperties::ReadStyle propertiesStyle) :
   Mod::FileBase(file),
   d(std::make_unique<FilePrivate>(propertiesStyle))

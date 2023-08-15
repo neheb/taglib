@@ -154,7 +154,7 @@ namespace TagLib {
      * Also see the note in the class documentation about why you may not want to
      * use this method in your application.
      */
-    explicit FileRef(FileName fileName,
+    explicit FileRef(const FileName& fileName,
                      bool readAudioProperties = true,
                      AudioProperties::ReadStyle
                      audioPropertiesStyle = AudioProperties::Average);
@@ -303,12 +303,12 @@ namespace TagLib {
      * \deprecated Use FileRef(FileName, bool, AudioProperties::ReadStyle).
      */
      // Kept because it is used for the C bindings
-    static File *create(FileName fileName,
+    static File *create(const FileName& fileName,
                         bool readAudioProperties = true,
                         AudioProperties::ReadStyle audioPropertiesStyle = AudioProperties::Average);
 
   private:
-    void parse(FileName fileName, bool readAudioProperties, AudioProperties::ReadStyle audioPropertiesStyle);
+    void parse(const FileName& fileName, bool readAudioProperties, AudioProperties::ReadStyle audioPropertiesStyle);
     void parse(IOStream *stream, bool readAudioProperties, AudioProperties::ReadStyle audioPropertiesStyle);
 
     class FileRefPrivate;

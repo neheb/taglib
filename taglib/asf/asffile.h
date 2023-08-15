@@ -52,7 +52,7 @@ namespace TagLib {
        * \a propertiesStyle are ignored.  The audio properties are always
        * read.
        */
-      File(FileName file, bool readProperties = true,
+      File(const FileName& file, bool readProperties = true,
            Properties::ReadStyle propertiesStyle = Properties::Average);
 
       /*!

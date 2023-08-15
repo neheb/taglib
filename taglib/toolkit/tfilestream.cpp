@@ -142,7 +142,7 @@ public:
 // public members
 ////////////////////////////////////////////////////////////////////////////////
 
-FileStream::FileStream(FileName fileName, bool openReadOnly) :
+FileStream::FileStream(const FileName& fileName, bool openReadOnly) :
   d(std::make_unique<FileStreamPrivate>(fileName))
 {
   // First try with read / write mode, if that fails, fall back to read only.

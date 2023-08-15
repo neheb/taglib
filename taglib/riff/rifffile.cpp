@@ -68,7 +68,7 @@ RIFF::File::~File() = default;
 // protected members
 ////////////////////////////////////////////////////////////////////////////////
 
-RIFF::File::File(FileName file, Endianness endianness) :
+RIFF::File::File(const FileName& file, Endianness endianness) :
   TagLib::File(file),
   d(std::make_unique<FilePrivate>(endianness))
 {

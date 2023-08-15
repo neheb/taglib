@@ -76,7 +76,7 @@ bool MPC::File::isSupported(IOStream *stream)
 // public members
 ////////////////////////////////////////////////////////////////////////////////
 
-MPC::File::File(FileName file, bool readProperties, Properties::ReadStyle) :
+MPC::File::File(const FileName& file, bool readProperties, Properties::ReadStyle) :
   TagLib::File(file),
   d(std::make_unique<FilePrivate>())
 {

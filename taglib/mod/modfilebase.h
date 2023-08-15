@@ -45,7 +45,7 @@ namespace TagLib {
       FileBase& operator=(const FileBase &) = delete;
 
     protected:
-      FileBase(FileName file);
+      FileBase(const FileName& file);
       FileBase(IOStream *stream);
 
       void writeString(const String &s, unsigned long size, char padding = 0);

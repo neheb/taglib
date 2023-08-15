@@ -59,7 +59,7 @@ bool Ogg::Speex::File::isSupported(IOStream *stream)
 // public members
 ////////////////////////////////////////////////////////////////////////////////
 
-Speex::File::File(FileName file, bool readProperties, Properties::ReadStyle) :
+Speex::File::File(const FileName& file, bool readProperties, Properties::ReadStyle) :
   Ogg::File(file),
   d(std::make_unique<FilePrivate>())
 {

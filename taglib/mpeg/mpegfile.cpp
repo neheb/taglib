@@ -123,7 +123,7 @@ bool MPEG::File::isSupported(IOStream *stream)
 // public members
 ////////////////////////////////////////////////////////////////////////////////
 
-MPEG::File::File(FileName file, bool readProperties, Properties::ReadStyle) :
+MPEG::File::File(const FileName& file, bool readProperties, Properties::ReadStyle) :
   TagLib::File(file),
   d(std::make_unique<FilePrivate>())
 {
@@ -131,7 +131,7 @@ MPEG::File::File(FileName file, bool readProperties, Properties::ReadStyle) :
     read(readProperties);
 }
 
-MPEG::File::File(FileName file, ID3v2::FrameFactory *frameFactory,
+MPEG::File::File(const FileName& file, ID3v2::FrameFactory *frameFactory,
                  bool readProperties, Properties::ReadStyle) :
   TagLib::File(file),
   d(std::make_unique<FilePrivate>(frameFactory))

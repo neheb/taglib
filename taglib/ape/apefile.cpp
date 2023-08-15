@@ -83,7 +83,7 @@ bool APE::File::isSupported(IOStream *stream)
 // public members
 ////////////////////////////////////////////////////////////////////////////////
 
-APE::File::File(FileName file, bool readProperties, Properties::ReadStyle) :
+APE::File::File(const FileName& file, bool readProperties, Properties::ReadStyle) :
   TagLib::File(file),
   d(std::make_unique<FilePrivate>())
 {

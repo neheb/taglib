@@ -64,7 +64,7 @@ bool Vorbis::File::isSupported(IOStream *stream)
 // public members
 ////////////////////////////////////////////////////////////////////////////////
 
-Vorbis::File::File(FileName file, bool readProperties, Properties::ReadStyle) :
+Vorbis::File::File(const FileName& file, bool readProperties, Properties::ReadStyle) :
   Ogg::File(file),
   d(std::make_unique<FilePrivate>())
 {

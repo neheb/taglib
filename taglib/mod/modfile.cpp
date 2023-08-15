@@ -45,7 +45,7 @@ public:
   Mod::Properties properties;
 };
 
-Mod::File::File(FileName file, bool readProperties,
+Mod::File::File(const FileName& file, bool readProperties,
                 AudioProperties::ReadStyle propertiesStyle) :
   Mod::FileBase(file),
   d(std::make_unique<FilePrivate>(propertiesStyle))

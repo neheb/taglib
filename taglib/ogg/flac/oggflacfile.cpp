@@ -64,7 +64,7 @@ bool Ogg::FLAC::File::isSupported(IOStream *stream)
 // public members
 ////////////////////////////////////////////////////////////////////////////////
 
-Ogg::FLAC::File::File(FileName file, bool readProperties,
+Ogg::FLAC::File::File(const FileName& file, bool readProperties,
                       Properties::ReadStyle propertiesStyle) :
   Ogg::File(file),
   d(std::make_unique<FilePrivate>())

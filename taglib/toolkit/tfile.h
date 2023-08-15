@@ -265,7 +265,7 @@ namespace TagLib {
      * \note Constructor is protected since this class should only be
      * instantiated through subclasses.
      */
-    File(FileName file);
+    File(const FileName& file);
 
     /*!
      * Construct a File object and use the \a stream instance.

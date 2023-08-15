@@ -70,7 +70,7 @@ namespace
 
   // Detect the file type by user-defined resolvers.
 
-  File *detectByResolvers(FileName fileName, bool readAudioProperties,
+  File *detectByResolvers(const FileName& fileName, bool readAudioProperties,
                           AudioProperties::ReadStyle audioPropertiesStyle)
   {
 #ifdef _WIN32
@@ -228,7 +228,7 @@ namespace
   // This looks redundant, but necessary in order not to change the previous
   // behavior of FileRef::create().
 
-  File* createInternal(FileName fileName, bool readAudioProperties,
+  File* createInternal(const FileName& fileName, bool readAudioProperties,
                        AudioProperties::ReadStyle audioPropertiesStyle)
   {
     File *file = detectByResolvers(fileName, readAudioProperties, audioPropertiesStyle);
@@ -323,7 +323,7 @@ FileRef::FileRef() :
 {
 }
 
-FileRef::FileRef(FileName fileName, bool readAudioProperties,
+FileRef::FileRef(const FileName& fileName, bool readAudioProperties,
                  AudioProperties::ReadStyle audioPropertiesStyle) :
   d(std::make_shared<FileRefPrivate>())
 {
@@ -451,7 +451,7 @@ bool FileRef::operator!=(const FileRef &ref) const
   return (ref.d->file != d->file);
 }
 
-File *FileRef::create(FileName fileName, bool readAudioProperties,
+File *FileRef::create(const FileName& fileName, bool readAudioProperties,
                       AudioProperties::ReadStyle audioPropertiesStyle) // static
 {
   return createInternal(fileName, readAudioProperties, audioPropertiesStyle);
@@ -461,7 +461,7 @@ File *FileRef::create(FileName fileName, bool readAudioProperties,
 // private members
 ////////////////////////////////////////////////////////////////////////////////
 
-void FileRef::parse(FileName fileName, bool readAudioProperties,
+void FileRef::parse(const FileName& fileName, bool readAudioProperties,
                     AudioProperties::ReadStyle audioPropertiesStyle)
 {
   // Try user-defined resolvers.

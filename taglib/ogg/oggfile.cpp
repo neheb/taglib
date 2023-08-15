@@ -160,7 +160,7 @@ bool Ogg::File::save()
 // protected members
 ////////////////////////////////////////////////////////////////////////////////
 
-Ogg::File::File(FileName file) :
+Ogg::File::File(const FileName& file) :
   TagLib::File(file),
   d(std::make_unique<FilePrivate>())
 {

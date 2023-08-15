@@ -34,7 +34,7 @@ class Mod::FileBase::FileBasePrivate
 
 Mod::FileBase::~FileBase() = default;
 
-Mod::FileBase::FileBase(FileName file) : TagLib::File(file)
+Mod::FileBase::FileBase(const FileName& file) : TagLib::File(file)
 {
 }
 

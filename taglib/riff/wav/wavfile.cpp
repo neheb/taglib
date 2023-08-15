@@ -65,7 +65,7 @@ bool RIFF::WAV::File::isSupported(IOStream *stream)
 // public members
 ////////////////////////////////////////////////////////////////////////////////
 
-RIFF::WAV::File::File(FileName file, bool readProperties, Properties::ReadStyle) :
+RIFF::WAV::File::File(const FileName& file, bool readProperties, Properties::ReadStyle) :
   RIFF::File(file, LittleEndian),
   d(std::make_unique<FilePrivate>())
 {
