@@ -43,9 +43,9 @@ namespace TagLib {
 
     operator const wchar_t *() const;
 
-    const std::wstring &wstr() const;
+    [[nodiscard]] const std::wstring &wstr() const;
 
-    String toString() const;
+    [[nodiscard]] String toString() const;
 
   private:
     const std::wstring m_wname;
