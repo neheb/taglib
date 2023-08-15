@@ -48,10 +48,10 @@ public:
 // A generic implementation
 
 template <class T>
-template <class TP> class List<T>::ListPrivate  : public ListPrivateBase
+template <class TP> class List<T>::ListPrivate : public ListPrivateBase
 {
+using ListPrivateBase::ListPrivateBase;
 public:
-  ListPrivate() : ListPrivateBase() {}
   ListPrivate(const std::list<TP> &l) : ListPrivateBase(), list(l) {}
   void clear() {
     list.clear();
@@ -63,10 +63,10 @@ public:
 // setAutoDelete() functionality.
 
 template <class T>
-template <class TP> class List<T>::ListPrivate<TP *>  : public ListPrivateBase
+template <class TP> class List<T>::ListPrivate<TP *> : public ListPrivateBase
 {
+using ListPrivateBase::ListPrivateBase;
 public:
-  ListPrivate() : ListPrivateBase() {}
   ListPrivate(const std::list<TP *> &l) : ListPrivateBase(), list(l) {}
   ~ListPrivate() {
     clear();

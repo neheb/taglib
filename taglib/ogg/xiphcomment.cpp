@@ -37,12 +37,12 @@ using namespace TagLib;
 
 namespace
 {
-  typedef Ogg::FieldListMap::Iterator FieldIterator;
-  typedef Ogg::FieldListMap::ConstIterator FieldConstIterator;
+  using FieldIterator        = Ogg::FieldListMap::Iterator;
+  using FieldConstIterator   = Ogg::FieldListMap::ConstIterator;
 
-  typedef List<FLAC::Picture *> PictureList;
-  typedef PictureList::Iterator PictureIterator;
-  typedef PictureList::ConstIterator PictureConstIterator;
+  using PictureList          = List<FLAC::Picture *>;
+  using PictureIterator      = PictureList::Iterator;
+  using PictureConstIterator = PictureList::ConstIterator;
 } // namespace
 
 class Ogg::XiphComment::XiphCommentPrivate
