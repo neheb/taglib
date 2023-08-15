@@ -139,8 +139,8 @@ namespace TagLib {
   namespace Ogg {
     namespace Vorbis {
       using Properties = TagLib::Vorbis::Properties;
-    }
-  }
+    } // namespace Vorbis
+  } // namespace Ogg
 #endif
 
 }  // namespace TagLib
