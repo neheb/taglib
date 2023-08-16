@@ -65,7 +65,7 @@ class FileRef::StreamTypeResolver::StreamTypeResolverPrivate
 
 namespace
 {
-  using ResolverList = List<const FileRef::FileTypeResolver *>;
+  using ResolverList = std::list<const FileRef::FileTypeResolver *>;
   ResolverList fileTypeResolvers;
 
   // Detect the file type by user-defined resolvers.
@@ -380,7 +380,7 @@ bool FileRef::save()
 
 const FileRef::FileTypeResolver *FileRef::addFileTypeResolver(const FileRef::FileTypeResolver *resolver) // static
 {
-  fileTypeResolvers.prepend(resolver);
+  fileTypeResolvers.push_front(resolver);
   return resolver;
 }
 
