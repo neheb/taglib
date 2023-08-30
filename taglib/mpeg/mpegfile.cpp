@@ -53,14 +53,6 @@ public:
   {
   }
 
-  ~FilePrivate()
-  {
-    delete properties;
-  }
-
-  FilePrivate(const FilePrivate &) = delete;
-  FilePrivate &operator=(const FilePrivate &) = delete;
-
   const ID3v2::FrameFactory *ID3v2FrameFactory;
 
   offset_t ID3v2Location { -1 };
@@ -73,7 +65,7 @@ public:
 
   TagUnion tag;
 
-  Properties *properties { nullptr };
+  std::unique_ptr<Properties> properties;
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -187,7 +179,7 @@ PropertyMap MPEG::File::setProperties(const PropertyMap &properties)
 
 MPEG::Properties *MPEG::File::audioProperties() const
 {
-  return d->properties;
+  return d->properties.get();
 }
 
 bool MPEG::File::save()
@@ -489,7 +481,7 @@ void MPEG::File::read(bool readProperties)
   }
 
   if(readProperties)
-    d->properties = new Properties(this);
+    d->properties = std::make_unique<Properties>(this);
 
   // Make sure that we have our default tag types available.
 

@@ -54,19 +54,10 @@ public:
     pages.setAutoDelete(true);
   }
 
-  ~FilePrivate()
-  {
-    delete firstPageHeader;
-    delete lastPageHeader;
-  }
-
-  FilePrivate(const FilePrivate &) = delete;
-  FilePrivate &operator=(const FilePrivate &) = delete;
-
   unsigned int streamSerialNumber;
   List<Page *> pages;
-  PageHeader *firstPageHeader { nullptr };
-  PageHeader *lastPageHeader { nullptr };
+  std::unique_ptr<PageHeader> firstPageHeader;
+  std::unique_ptr<PageHeader> lastPageHeader;
   Map<unsigned int, ByteVector> dirtyPackets;
 };
 
@@ -132,10 +123,10 @@ const Ogg::PageHeader *Ogg::File::firstPageHeader()
     if(firstPageHeaderOffset < 0)
       return nullptr;
 
-    d->firstPageHeader = new PageHeader(this, firstPageHeaderOffset);
+    d->firstPageHeader = std::make_unique<PageHeader>(this, firstPageHeaderOffset);
   }
 
-  return d->firstPageHeader->isValid() ? d->firstPageHeader : nullptr;
+  return d->firstPageHeader->isValid() ? d->firstPageHeader.get() : nullptr;
 }
 
 const Ogg::PageHeader *Ogg::File::lastPageHeader()
@@ -145,10 +136,10 @@ const Ogg::PageHeader *Ogg::File::lastPageHeader()
     if(lastPageHeaderOffset < 0)
       return nullptr;
 
-    d->lastPageHeader = new PageHeader(this, lastPageHeaderOffset);
+    d->lastPageHeader = std::make_unique<PageHeader>(this, lastPageHeaderOffset);
   }
 
-  return d->lastPageHeader->isValid() ? d->lastPageHeader : nullptr;
+  return d->lastPageHeader->isValid() ? d->lastPageHeader.get() : nullptr;
 }
 
 bool Ogg::File::save()

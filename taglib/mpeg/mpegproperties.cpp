@@ -38,16 +38,7 @@ using namespace TagLib;
 class MPEG::Properties::PropertiesPrivate
 {
 public:
-  PropertiesPrivate() = default;
-  ~PropertiesPrivate()
-  {
-    delete xingHeader;
-  }
-
-  PropertiesPrivate(const PropertiesPrivate &) = delete;
-  PropertiesPrivate &operator=(const PropertiesPrivate &) = delete;
-
-  XingHeader *xingHeader { nullptr };
+  std::unique_ptr<XingHeader> xingHeader;
   int length { 0 };
   int bitrate { 0 };
   int sampleRate { 0 };
@@ -95,7 +86,7 @@ int MPEG::Properties::channels() const
 
 const MPEG::XingHeader *MPEG::Properties::xingHeader() const
 {
-  return d->xingHeader;
+  return d->xingHeader.get();
 }
 
 MPEG::Header::Version MPEG::Properties::version() const
@@ -148,9 +139,8 @@ void MPEG::Properties::read(File *file)
   // VBR stream.
 
   file->seek(firstFrameOffset);
-  d->xingHeader = new XingHeader(file->readBlock(firstHeader.frameLength()));
+  d->xingHeader = std::make_unique<XingHeader>(file->readBlock(firstHeader.frameLength()));
   if(!d->xingHeader->isValid()) {
-    delete d->xingHeader;
     d->xingHeader = nullptr;
   }
 

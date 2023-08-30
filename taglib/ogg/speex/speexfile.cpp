@@ -40,18 +40,8 @@ using namespace TagLib::Ogg;
 class Speex::File::FilePrivate
 {
 public:
-  FilePrivate() = default;
-  ~FilePrivate()
-  {
-    delete comment;
-    delete properties;
-  }
-
-  FilePrivate(const FilePrivate &) = delete;
-  FilePrivate &operator=(const FilePrivate &) = delete;
-
-  Ogg::XiphComment *comment { nullptr };
-  Properties *properties { nullptr };
+  std::unique_ptr<Ogg::XiphComment> comment;
+  std::unique_ptr<Properties> properties;
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -90,7 +80,7 @@ Speex::File::~File() = default;
 
 Ogg::XiphComment *Speex::File::tag() const
 {
-  return d->comment;
+  return d->comment.get();
 }
 
 PropertyMap Speex::File::properties() const
@@ -105,13 +95,13 @@ PropertyMap Speex::File::setProperties(const PropertyMap &properties)
 
 Speex::Properties *Speex::File::audioProperties() const
 {
-  return d->properties;
+  return d->properties.get();
 }
 
 bool Speex::File::save()
 {
   if(!d->comment)
-    d->comment = new Ogg::XiphComment();
+    d->comment = std::make_unique<Ogg::XiphComment>();
 
   setPacket(1, d->comment->render());
 
@@ -134,8 +124,8 @@ void Speex::File::read(bool readProperties)
 
   ByteVector commentHeaderData = packet(1);
 
-  d->comment = new Ogg::XiphComment(commentHeaderData);
+  d->comment                   = std::make_unique<Ogg::XiphComment>(commentHeaderData);
 
   if(readProperties)
-    d->properties = new Properties(this);
+    d->properties = std::make_unique<Properties>(this);
 }
