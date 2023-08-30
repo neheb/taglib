@@ -53,10 +53,7 @@ public:
   class MetadataObject;
   class MetadataLibraryObject;
 
-  FilePrivate()
-  {
-    objects.setAutoDelete(true);
-  }
+  FilePrivate() = default;
 
   ~FilePrivate()
   {
@@ -72,13 +69,13 @@ public:
   ASF::Tag *tag { nullptr };
   ASF::Properties *properties { nullptr };
 
-  List<BaseObject *> objects;
+  std::list<std::shared_ptr<BaseObject>> objects;
 
-  ContentDescriptionObject *contentDescriptionObject { nullptr };
-  ExtendedContentDescriptionObject *extendedContentDescriptionObject { nullptr };
-  HeaderExtensionObject *headerExtensionObject { nullptr };
-  MetadataObject *metadataObject { nullptr };
-  MetadataLibraryObject *metadataLibraryObject { nullptr };
+  std::shared_ptr<ContentDescriptionObject> contentDescriptionObject;
+  std::shared_ptr<ExtendedContentDescriptionObject> extendedContentDescriptionObject;
+  std::shared_ptr<HeaderExtensionObject> headerExtensionObject;
+  std::shared_ptr<MetadataObject> metadataObject;
+  std::shared_ptr<MetadataLibraryObject> metadataLibraryObject;
 };
 
 namespace
@@ -167,7 +164,7 @@ public:
 class ASF::File::FilePrivate::HeaderExtensionObject : public ASF::File::FilePrivate::BaseObject
 {
 public:
-  List<ASF::File::FilePrivate::BaseObject *> objects;
+  std::list<std::shared_ptr<ASF::File::FilePrivate::BaseObject>> objects;
   HeaderExtensionObject();
   ByteVector guid() const override;
   void parse(ASF::File *file, unsigned int size) override;
@@ -359,10 +356,7 @@ ByteVector ASF::File::FilePrivate::MetadataLibraryObject::render(ASF::File *file
   return BaseObject::render(file);
 }
 
-ASF::File::FilePrivate::HeaderExtensionObject::HeaderExtensionObject()
-{
-  objects.setAutoDelete(true);
-}
+ASF::File::FilePrivate::HeaderExtensionObject::HeaderExtensionObject() = default;
 
 ByteVector ASF::File::FilePrivate::HeaderExtensionObject::guid() const
 {
@@ -386,20 +380,19 @@ void ASF::File::FilePrivate::HeaderExtensionObject::parse(ASF::File *file, unsig
       file->setValid(false);
       break;
     }
-    BaseObject *obj;
-    if(guid == metadataGuid) {
-      file->d->metadataObject = new MetadataObject();
-      obj = file->d->metadataObject;
-    }
-    else if(guid == metadataLibraryGuid) {
-      file->d->metadataLibraryObject = new MetadataLibraryObject();
-      obj = file->d->metadataLibraryObject;
-    }
-    else {
-      obj = new UnknownObject(guid);
-    }
+    auto obj = [&]() mutable -> std::shared_ptr<BaseObject> {
+      if(guid == metadataGuid) {
+        file->d->metadataObject = std::make_shared<MetadataObject>();
+        return file->d->metadataObject;
+      }
+      if(guid == metadataLibraryGuid) {
+        file->d->metadataLibraryObject = std::make_shared<MetadataLibraryObject>();
+        return file->d->metadataLibraryObject;
+      }
+      return std::make_shared<UnknownObject>(guid);
+    }();
     obj->parse(file, static_cast<unsigned int>(size));
-    objects.append(obj);
+    objects.push_back(std::move(obj));
     dataPos += size;
   }
 }
@@ -541,24 +534,24 @@ bool ASF::File::save()
   }
 
   if(!d->contentDescriptionObject) {
-    d->contentDescriptionObject = new FilePrivate::ContentDescriptionObject();
-    d->objects.append(d->contentDescriptionObject);
+    d->contentDescriptionObject = std::make_shared<FilePrivate::ContentDescriptionObject>();
+    d->objects.push_back(d->contentDescriptionObject);
   }
   if(!d->extendedContentDescriptionObject) {
-    d->extendedContentDescriptionObject = new FilePrivate::ExtendedContentDescriptionObject();
-    d->objects.append(d->extendedContentDescriptionObject);
+    d->extendedContentDescriptionObject = std::make_shared<FilePrivate::ExtendedContentDescriptionObject>();
+    d->objects.push_back(d->extendedContentDescriptionObject);
   }
   if(!d->headerExtensionObject) {
-    d->headerExtensionObject = new FilePrivate::HeaderExtensionObject();
-    d->objects.append(d->headerExtensionObject);
+    d->headerExtensionObject = std::make_shared<FilePrivate::HeaderExtensionObject>();
+    d->objects.push_back(d->headerExtensionObject);
   }
   if(!d->metadataObject) {
-    d->metadataObject = new FilePrivate::MetadataObject();
-    d->headerExtensionObject->objects.append(d->metadataObject);
+    d->metadataObject = std::make_shared<FilePrivate::MetadataObject>();
+    d->headerExtensionObject->objects.push_back(d->metadataObject);
   }
   if(!d->metadataLibraryObject) {
-    d->metadataLibraryObject = new FilePrivate::MetadataLibraryObject();
-    d->headerExtensionObject->objects.append(d->metadataLibraryObject);
+    d->metadataLibraryObject = std::make_shared<FilePrivate::MetadataLibraryObject>();
+    d->headerExtensionObject->objects.push_back(d->metadataLibraryObject);
   }
 
   d->extendedContentDescriptionObject->attributeData.clear();
@@ -635,8 +628,8 @@ void ASF::File::read()
   }
   seek(2, Current);
 
-  FilePrivate::FilePropertiesObject   *filePropertiesObject   = nullptr;
-  FilePrivate::StreamPropertiesObject *streamPropertiesObject = nullptr;
+  std::shared_ptr<FilePrivate::FilePropertiesObject> filePropertiesObject;
+  std::shared_ptr<FilePrivate::StreamPropertiesObject> streamPropertiesObject;
   for(int i = 0; i < numObjects; i++) {
     const ByteVector guid = readBlock(16);
     if(guid.size() != 16) {
@@ -648,40 +641,36 @@ void ASF::File::read()
       setValid(false);
       break;
     }
-    FilePrivate::BaseObject *obj;
-    if(guid == filePropertiesGuid) {
-      filePropertiesObject = new FilePrivate::FilePropertiesObject();
-      obj = filePropertiesObject;
-    }
-    else if(guid == streamPropertiesGuid) {
-      streamPropertiesObject = new FilePrivate::StreamPropertiesObject();
-      obj = streamPropertiesObject;
-    }
-    else if(guid == contentDescriptionGuid) {
-      d->contentDescriptionObject = new FilePrivate::ContentDescriptionObject();
-      obj = d->contentDescriptionObject;
-    }
-    else if(guid == extendedContentDescriptionGuid) {
-      d->extendedContentDescriptionObject = new FilePrivate::ExtendedContentDescriptionObject();
-      obj = d->extendedContentDescriptionObject;
-    }
-    else if(guid == headerExtensionGuid) {
-      d->headerExtensionObject = new FilePrivate::HeaderExtensionObject();
-      obj = d->headerExtensionObject;
-    }
-    else if(guid == codecListGuid) {
-      obj = new FilePrivate::CodecListObject();
-    }
-    else {
-      if(guid == contentEncryptionGuid ||
-         guid == extendedContentEncryptionGuid ||
-         guid == advancedContentEncryptionGuid) {
+    auto obj = [&]() mutable -> std::shared_ptr<FilePrivate::BaseObject> {
+      if(guid == filePropertiesGuid) {
+        filePropertiesObject = std::make_shared<FilePrivate::FilePropertiesObject>();
+        return filePropertiesObject;
+      }
+      if(guid == streamPropertiesGuid) {
+        streamPropertiesObject = std::make_shared<FilePrivate::StreamPropertiesObject>();
+        return streamPropertiesObject;
+      }
+      if(guid == contentDescriptionGuid) {
+        d->contentDescriptionObject = std::make_shared<FilePrivate::ContentDescriptionObject>();
+        return d->contentDescriptionObject;
+      }
+      if(guid == extendedContentDescriptionGuid) {
+        d->extendedContentDescriptionObject = std::make_shared<FilePrivate::ExtendedContentDescriptionObject>();
+        return d->extendedContentDescriptionObject;
+      }
+      if(guid == headerExtensionGuid) {
+        d->headerExtensionObject = std::make_shared<FilePrivate::HeaderExtensionObject>();
+        return d->headerExtensionObject;
+      }
+      if(guid == codecListGuid)
+        return std::make_shared<FilePrivate::CodecListObject>();
+      if(guid == contentEncryptionGuid || guid == extendedContentEncryptionGuid || guid == advancedContentEncryptionGuid) {
         d->properties->setEncrypted(true);
       }
-      obj = new FilePrivate::UnknownObject(guid);
-    }
+      return std::make_shared<FilePrivate::UnknownObject>(guid);
+    }();
     obj->parse(this, size);
-    d->objects.append(obj);
+    d->objects.push_back(std::move(obj));
   }
 
   if(!filePropertiesObject || !streamPropertiesObject) {
