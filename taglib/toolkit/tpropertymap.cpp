@@ -38,14 +38,13 @@ public:
 PropertyMap::PropertyMap() :
   d(std::make_unique<PropertyMapPrivate>())
 {
-
 }
 
 PropertyMap::PropertyMap(const PropertyMap &m) :
   SimplePropertyMap(m),
   d(std::make_unique<PropertyMapPrivate>())
 {
-  *d = *m.d;
+  *d = std::move(*m.d);
 }
 
 PropertyMap::PropertyMap(const SimplePropertyMap &m) :
@@ -189,7 +188,7 @@ PropertyMap &PropertyMap::operator=(const PropertyMap &other)
     return *this;
 
   SimplePropertyMap::operator=(other);
-  *d = *other.d;
+  *d = std::move(*other.d);
   return *this;
 }
 

@@ -56,7 +56,7 @@ MP4::Item::Item(const Item &item) = default;
 MP4::Item &
 MP4::Item::operator=(const Item &item)
 {
-  Item(item).swap(*this);
+  d = item.d;
   return *this;
 }
 

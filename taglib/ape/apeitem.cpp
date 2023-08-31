@@ -80,7 +80,7 @@ APE::Item::~Item() = default;
 
 Item &APE::Item::operator=(const Item &item)
 {
-  Item(item).swap(*this);
+  *d = std::move(*item.d);
   return *this;
 }
 

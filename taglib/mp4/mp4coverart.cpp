@@ -50,7 +50,7 @@ MP4::CoverArt::CoverArt(const CoverArt &item) = default;
 MP4::CoverArt &
 MP4::CoverArt::operator=(const CoverArt &item)
 {
-  CoverArt(item).swap(*this);
+  d = item.d;
   return *this;
 }
 

@@ -108,7 +108,7 @@ int ASF::Picture::dataSize() const
 
 ASF::Picture& ASF::Picture::operator=(const ASF::Picture& other)
 {
-  Picture(other).swap(*this);
+  d = other.d;
   return *this;
 }
 

@@ -430,7 +430,7 @@ bool FileRef::isNull() const
 
 FileRef &FileRef::operator=(const FileRef &ref)
 {
-  FileRef(ref).swap(*this);
+  d = ref.d;
   return *this;
 }
 

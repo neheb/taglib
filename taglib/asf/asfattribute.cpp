@@ -111,7 +111,7 @@ ASF::Attribute::Attribute(bool value) :
 
 ASF::Attribute &ASF::Attribute::operator=(const ASF::Attribute &other)
 {
-  Attribute(other).swap(*this);
+  d = other.d;
   return *this;
 }
 
