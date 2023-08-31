@@ -44,15 +44,15 @@ public:
 
   void testSimple()
   {
-    MP4::CoverArt c(MP4::CoverArt::PNG, "foo");
+    auto c = MP4::CoverArt(MP4::CoverArt::PNG, "foo");
     CPPUNIT_ASSERT_EQUAL(MP4::CoverArt::PNG, c.format());
     CPPUNIT_ASSERT_EQUAL(ByteVector("foo"), c.data());
 
-    MP4::CoverArt c2(c);
+    const auto &c2 = c;
     CPPUNIT_ASSERT_EQUAL(MP4::CoverArt::PNG, c2.format());
     CPPUNIT_ASSERT_EQUAL(ByteVector("foo"), c2.data());
 
-    MP4::CoverArt c3 = c;
+    const auto &c3 = c;
     CPPUNIT_ASSERT_EQUAL(MP4::CoverArt::PNG, c3.format());
     CPPUNIT_ASSERT_EQUAL(ByteVector("foo"), c3.data());
   }
