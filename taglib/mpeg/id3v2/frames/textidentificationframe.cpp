@@ -403,7 +403,7 @@ void UserTextIdentificationFrame::setDescription(const String &s)
   if(l.isEmpty())
     l.append(s);
   else
-    l[0] = s;
+    l.front() = s;
 
   TextIdentificationFrame::setText(l);
 }

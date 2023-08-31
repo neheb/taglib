@@ -62,7 +62,7 @@ String ASF::Tag::artist() const
 String ASF::Tag::album() const
 {
   if(d->attributeListMap.contains("WM/AlbumTitle"))
-    return d->attributeListMap["WM/AlbumTitle"][0].toString();
+    return d->attributeListMap["WM/AlbumTitle"].front().toString();
   return String();
 }
 
@@ -84,27 +84,27 @@ String ASF::Tag::rating() const
 unsigned int ASF::Tag::year() const
 {
   if(d->attributeListMap.contains("WM/Year"))
-    return d->attributeListMap["WM/Year"][0].toString().toInt();
+    return d->attributeListMap["WM/Year"].front().toString().toInt();
   return 0;
 }
 
 unsigned int ASF::Tag::track() const
 {
   if(d->attributeListMap.contains("WM/TrackNumber")) {
-    const ASF::Attribute attr = d->attributeListMap["WM/TrackNumber"][0];
+    const ASF::Attribute attr = d->attributeListMap["WM/TrackNumber"].front();
     if(attr.type() == ASF::Attribute::DWordType)
       return attr.toUInt();
     return attr.toString().toInt();
   }
   if(d->attributeListMap.contains("WM/Track"))
-    return d->attributeListMap["WM/Track"][0].toUInt();
+    return d->attributeListMap["WM/Track"].front().toUInt();
   return 0;
 }
 
 String ASF::Tag::genre() const
 {
   if(d->attributeListMap.contains("WM/Genre"))
-    return d->attributeListMap["WM/Genre"][0].toString();
+    return d->attributeListMap["WM/Genre"].front().toString();
   return String();
 }
 

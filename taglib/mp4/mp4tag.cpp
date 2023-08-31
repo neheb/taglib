@@ -77,7 +77,7 @@ MP4::Tag::Tag(TagLib::File *file, MP4::Atoms *atoms) :
     else if(atom->name == "rate") {
       AtomDataList data = parseData2(atom);
       if(!data.isEmpty()) {
-        AtomData val = data[0];
+        AtomData val = data.front();
         if (val.type == TypeUTF8) {
           addItem(atom->name, StringList(String(val.data, String::UTF8)));
         } else {
@@ -170,7 +170,7 @@ MP4::Tag::parseInt(const MP4::Atom *atom)
 {
   ByteVectorList data = parseData(atom);
   if(!data.isEmpty()) {
-    addItem(atom->name, static_cast<int>(data[0].toShort()));
+    addItem(atom->name, static_cast<int>(data.front().toShort()));
   }
 }
 
@@ -179,7 +179,7 @@ MP4::Tag::parseUInt(const MP4::Atom *atom)
 {
   ByteVectorList data = parseData(atom);
   if(!data.isEmpty()) {
-    addItem(atom->name, data[0].toUInt());
+    addItem(atom->name, data.front().toUInt());
   }
 }
 
@@ -188,7 +188,7 @@ MP4::Tag::parseLongLong(const MP4::Atom *atom)
 {
   ByteVectorList data = parseData(atom);
   if(!data.isEmpty()) {
-    addItem(atom->name, data[0].toLongLong());
+    addItem(atom->name, data.front().toLongLong());
   }
 }
 
@@ -197,7 +197,7 @@ MP4::Tag::parseByte(const MP4::Atom *atom)
 {
   ByteVectorList data = parseData(atom);
   if(!data.isEmpty()) {
-    addItem(atom->name, static_cast<unsigned char>(data[0].at(0)));
+    addItem(atom->name, static_cast<unsigned char>(data.front().at(0)));
   }
 }
 
@@ -206,7 +206,7 @@ MP4::Tag::parseGnre(const MP4::Atom *atom)
 {
   ByteVectorList data = parseData(atom);
   if(!data.isEmpty()) {
-    int idx = static_cast<int>(data[0].toShort());
+    int idx = static_cast<int>(data.front().toShort());
     if(idx > 0) {
       addItem("\251gen", StringList(ID3v1::genre(idx - 1)));
     }
@@ -218,8 +218,8 @@ MP4::Tag::parseIntPair(const MP4::Atom *atom)
 {
   ByteVectorList data = parseData(atom);
   if(!data.isEmpty()) {
-    const int a = data[0].toShort(2U);
-    const int b = data[0].toShort(4U);
+    const int a = data.front().toShort(2U);
+    const int b = data.front().toShort(4U);
     addItem(atom->name, MP4::Item(a, b));
   }
 }
@@ -229,7 +229,7 @@ MP4::Tag::parseBool(const MP4::Atom *atom)
 {
   ByteVectorList data = parseData(atom);
   if(!data.isEmpty()) {
-    bool value = !data[0].isEmpty() && data[0][0] != '\0';
+    bool value = !data.front().isEmpty() && data.front()[0] != '\0';
     addItem(atom->name, value);
   }
 }
@@ -255,7 +255,7 @@ MP4::Tag::parseFreeForm(const MP4::Atom *atom)
     auto itBegin = data.begin();
 
     String name = "----:";
-    name += String((itBegin++)->data, String::UTF8);  // data[0].data
+    name += String((itBegin++)->data, String::UTF8);  // data.front().data
     name += ':';
     name += String((itBegin++)->data, String::UTF8);  // data[1].data
 
@@ -1021,7 +1021,7 @@ PropertyMap MP4::Tag::setProperties(const PropertyMap &props)
       if((prop == "TRACKNUMBER" || prop == "DISCNUMBER") && !val.isEmpty()) {
         StringList parts = StringList::split(val.front(), "/");
         if(!parts.isEmpty()) {
-          int first = parts[0].toInt();
+          int first  = parts.front().toInt();
           int second = 0;
           if(parts.size() > 1) {
             second = parts[1].toInt();
