@@ -1,0 +1,27 @@
+---
+Language:        Cpp
+BasedOnStyle:  WebKit
+AccessModifierOffset: -2
+IndentWidth: 2
+ConstructorInitializerIndentWidth: 2
+ContinuationIndentWidth: 2
+PPIndentWidth: 2
+IndentPPDirectives: AfterHash
+NamespaceIndentation: All
+DerivePointerAlignment: false
+PointerAlignment: Right
+ColumnLimit: 75
+AlignAfterOpenBracket: true
+AlignConsecutiveMacros: AcrossEmptyLinesAndComments
+AlignTrailingComments:
+  Kind: Always
+  OverEmptyLines: 2
+AllowShortFunctionsOnASingleLine: false
+BreakConstructorInitializers: AfterColon
+BreakBeforeBraces: Custom
+BraceWrapping:
+  AfterClass: true
+  AfterFunction: true
+  BeforeElse: true
+SpaceBeforeParens: false
+Cpp11BracedListStyle: true
