@@ -56,9 +56,9 @@ namespace
 #if defined (PLATFORM_WINRT)
     return CreateFile2(path.wstr().c_str(), access, FILE_SHARE_READ, OPEN_EXISTING, nullptr);
 #else
-    constexpr std::wstring_view LongLocalPathPrefix = L"\\\\?\\";
-    constexpr std::wstring_view UNCPathPrefix = L"\\\\";
-    constexpr std::wstring_view LongUNCPathPrefix = L"\\\\?\\UNC\\";
+    const std::wstring LongLocalPathPrefix = L"\\\\?\\";
+    const std::wstring UNCPathPrefix = L"\\\\";
+    const std::wstring LongUNCPathPrefix = L"\\\\?\\UNC\\";
     std::wstring pathWStr = path.wstr();
     if(pathWStr.length() > MAX_PATH &&
        pathWStr.compare(0, LongLocalPathPrefix.size() - 1, LongLocalPathPrefix) != 0 &&
