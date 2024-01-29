@@ -27,39 +27,42 @@
 
 #include "tstring.h"
 
+#include <algorithm>
+#include <array>
+
 using namespace TagLib;
 
 namespace {
 
-  constexpr const char *typeStrs[] = {
-    "Other",
-    "File Icon",
-    "Other File Icon",
-    "Front Cover",
-    "Back Cover",
-    "Leaflet Page",
-    "Media",
-    "Lead Artist",
-    "Artist",
-    "Conductor",
-    "Band",
-    "Composer",
-    "Lyricist",
-    "Recording Location",
-    "During Recording",
-    "During Performance",
-    "Movie Screen Capture",
-    "Coloured Fish",
-    "Illustration",
-    "Band Logo",
-    "Publisher Logo",
+  const std::array typeStrs {
+    String("Other"),
+    String("File Icon"),
+    String("Other File Icon"),
+    String("Front Cover"),
+    String("Back Cover"),
+    String("Leaflet Page"),
+    String("Media"),
+    String("Lead Artist"),
+    String("Artist"),
+    String("Conductor"),
+    String("Band"),
+    String("Composer"),
+    String("Lyricist"),
+    String("Recording Location"),
+    String("During Recording"),
+    String("During Performance"),
+    String("Movie Screen Capture"),
+    String("Coloured Fish"),
+    String("Illustration"),
+    String("Band Logo"),
+    String("Publisher Logo"),
   };
 
 }  // namespace
 
 String Utils::pictureTypeToString(int type)
 {
-  if(type >= 0 && type < static_cast<int>(std::size(typeStrs))) {
+  if(type >= 0 && type < static_cast<int>(typeStrs.size())) {
     return typeStrs[type];
   }
   return "";
@@ -67,10 +70,6 @@ String Utils::pictureTypeToString(int type)
 
 int Utils::pictureTypeFromString(const String& str)
 {
-  for(int i = 0; i < static_cast<int>(std::size(typeStrs)); ++i) {
-    if(str == typeStrs[i]) {
-      return i;
-    }
-  }
-  return 0;
+  auto it = std::find(typeStrs.begin(), typeStrs.end(), str);
+  return static_cast<int>(std::distance(typeStrs.begin(), it));
 }
