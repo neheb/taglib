@@ -97,8 +97,8 @@ bool PropertyMap::contains(const String &key) const
 
 bool PropertyMap::contains(const PropertyMap &other) const
 {
-  return std::all_of(other.begin(), other.end(),
-    [this](const auto &o) { return contains(o.first) && (*this)[o.first] == o.second; });
+  auto f = [this](const auto &o) { return contains(o.first) && (*this)[o.first] == o.second; };
+  return std::all_of(other.cbegin(), other.cend(), f);
 }
 
 PropertyMap &PropertyMap::erase(const String &key)

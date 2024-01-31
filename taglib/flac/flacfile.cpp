@@ -159,10 +159,8 @@ StringList FLAC::File::complexPropertyKeys() const
 {
   StringList keys = TagLib::File::complexPropertyKeys();
   if(!keys.contains("PICTURE")) {
-    if(std::any_of(d->blocks.cbegin(), d->blocks.cend(),
-        [](MetadataBlock *block) {
-      return dynamic_cast<Picture *>(block) != nullptr;
-    })) {
+    auto f = [](MetadataBlock *block) { return dynamic_cast<Picture *>(block); };
+    if(std::any_of(d->blocks.cbegin(), d->blocks.cend(), f)) {
       keys.append("PICTURE");
     }
   }

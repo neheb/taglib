@@ -553,8 +553,8 @@ void ID3v2::Tag::downgradeFrames(FrameList *frames, FrameList *newFrames) const
   for(const auto &frame : std::as_const(d->frameList)) {
     ByteVector frameID = frame->header()->frameID();
 
-    if(std::any_of(unsupportedFrames.begin(), unsupportedFrames.end(),
-                   [&frameID](auto m){ return frameID == m; })) {
+    auto f = [&frameID](auto m){ return frameID == m; };
+    if(std::any_of(unsupportedFrames.cbegin(), unsupportedFrames.cend(), f)) {
       debug("A frame that is not supported in ID3v2.3 \'" + String(frameID) +
             "\' has been discarded");
       continue;

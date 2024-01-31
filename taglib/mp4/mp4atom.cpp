@@ -135,8 +135,8 @@ MP4::Atom::find(const char *name1, const char *name2, const char *name3, const c
   if(name1 == nullptr) {
     return this;
   }
-  auto it = std::find_if(d->children.cbegin(), d->children.cend(),
-      [&name1](const Atom *child) { return child->d->name == name1; });
+  auto f = [name1](const Atom *child) { return child->name() == name1; };
+  auto it = std::find_if(d->children.cbegin(), d->children.cend(), f);
   return it != d->children.cend() ? (*it)->find(name2, name3, name4) : nullptr;
 }
 
@@ -162,8 +162,8 @@ MP4::Atom::path(MP4::AtomList &path, const char *name1, const char *name2, const
   if(name1 == nullptr) {
     return true;
   }
-  auto it = std::find_if(d->children.cbegin(), d->children.cend(),
-      [&name1](const Atom *child) { return child->d->name == name1; });
+  auto f = [name1](const Atom *child) { return child->name() == name1; };
+  auto it = std::find_if(d->children.cbegin(), d->children.cend(), f);
   return it != d->children.cend() ? (*it)->path(path, name2, name3) : false;
 }
 
@@ -235,8 +235,8 @@ MP4::Atoms::~Atoms() = default;
 MP4::Atom *
 MP4::Atoms::find(const char *name1, const char *name2, const char *name3, const char *name4) const
 {
-  auto it = std::find_if(d->atoms.cbegin(), d->atoms.cend(),
-      [&name1](const Atom *atom) { return atom->name() == name1; });
+  auto f = [name1](const Atom *child) { return child->name() == name1; };
+  auto it = std::find_if(d->atoms.cbegin(), d->atoms.cend(), f);
   return it != d->atoms.cend() ? (*it)->find(name2, name3, name4) : nullptr;
 }
 
@@ -244,8 +244,8 @@ MP4::AtomList
 MP4::Atoms::path(const char *name1, const char *name2, const char *name3, const char *name4) const
 {
   MP4::AtomList path;
-  auto it = std::find_if(d->atoms.cbegin(), d->atoms.cend(),
-      [&name1](const Atom *atom) { return atom->name() == name1; });
+  auto f = [name1](const Atom *child) { return child->name() == name1; };
+  auto it = std::find_if(d->atoms.cbegin(), d->atoms.cend(), f);
   if(it != d->atoms.cend()) {
     if(!(*it)->path(path, name2, name3, name4)) {
       path.clear();
@@ -259,8 +259,8 @@ namespace
 {
   bool checkValid(const MP4::AtomList &list)
   {
-    return std::none_of(list.begin(), list.end(),
-      [](const auto &a) { return a->length() == 0 || !checkValid(a->children()); });
+    auto f = [](const auto &a) { return a->length() == 0 || !checkValid(a->children()); };
+    return std::none_of(list.cbegin(), list.cend(), f);
   }
 }  // namespace
 
